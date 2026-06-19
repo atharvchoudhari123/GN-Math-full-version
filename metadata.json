@@ -1,0 +1,6 @@
+{
+  "name": "gn-math",
+  "description": "A beautiful, highly polished unblocked games portal disguised as a mathematical learning site. Features custom game grids, native HTML5 games, advanced Tab Cloaking, custom Panic Key redirects, and more.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
