@@ -25,6 +25,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { Slope3D, RetroFootball, EquationClicker, Math2048, playSound } from './nativeGames';
+import { RAW_GAMES } from './gamesData';
 
 // Definitions for game items
 interface GameItem {
@@ -43,6 +44,173 @@ interface GameItem {
   isSuggest?: boolean;
   isComment?: boolean;
 }
+
+// Custom category mapper functions
+function determineGameCategory(title: string): '3d' | 'puzzle' | 'sports' | 'casual' | 'horror' {
+  const t = title.toLowerCase();
+  if (t.includes('slope') || t.includes('3d') || t.includes('drive') || t.includes('moto') || t.includes('run') || t.includes('tunnel') || t.includes('geometry') || t.includes('retro bowl')) return '3d';
+  if (t.includes('chess') || t.includes('sudoku') || t.includes('2048') || t.includes('puzzle') || t.includes('math') || t.includes('block') || t.includes('sort') || t.includes('connect')) return 'puzzle';
+  if (t.includes('ball') || t.includes('football') || t.includes('soccer') || t.includes('billiards') || t.includes('sports') || t.includes('bowl') || t.includes('basketball') || t.includes('tennis') || t.includes('golf')) return 'sports';
+  if (t.includes('fnaf') || t.includes('horror') || t.includes('creep') || t.includes('slender') || t.includes('dark') || t.includes('abandoned') || t.includes('scary')) return 'horror';
+  return 'casual';
+}
+
+function determineGameDescription(title: string, category: string): string {
+  if (category === '3d') {
+    return `Enjoy high-speed immersive unblocked 3D coordinates. Roll, jump, and dodge linear grids in ${title}.`;
+  }
+  if (category === 'puzzle') {
+    return `Train your mathematical IQ with ${title}. Solve challenging number patterns, logic puzzles, and grids.`;
+  }
+  if (category === 'sports') {
+    return `Compete in sports simulations offline. Evade defenders, score, and show off tactics on the ${title} stage.`;
+  }
+  if (category === 'horror') {
+    return `Brace yourself for eerie atmosphere and psychological puzzles. Unravel mysteries in the dark coordinates of ${title}.`;
+  }
+  return `Play absolute unblocked arcade gaming with ${title} online. Polished retro controls running inside stable cache frameworks.`;
+}
+
+// Unsplash images that match each category perfectly
+const UNSPLASH_IMAGES = {
+  '3d': [
+    'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=400&auto=format&fit=crop&q=80',
+  ],
+  'puzzle': [
+    'https://images.unsplash.com/photo-1516116211223-5c359a36298a?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1596495578065-6e0763fa1141?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&auto=format&fit=crop&q=80',
+  ],
+  'sports': [
+    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&auto=format&fit=crop&q=80',
+  ],
+  'horror': [
+    'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1533925565074-bcec6719e7a2?w=400&auto=format&fit=crop&q=80',
+  ],
+  'casual': [
+    'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1502481851512-e9e2529beff9?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&auto=format&fit=crop&q=80',
+  ],
+};
+
+function getGameThumbnail(id: string, category: '3d' | 'puzzle' | 'sports' | 'casual' | 'horror'): string {
+  const list = UNSPLASH_IMAGES[category] || UNSPLASH_IMAGES['casual'];
+  let sum = 0;
+  for (let i = 0; i < id.length; i++) sum += id.charCodeAt(i);
+  return list[sum % list.length];
+}
+
+const NATIVE_GAMES: GameItem[] = [
+  {
+    id: 'suggest_games',
+    title: '[!] SUGGEST GAMES',
+    subtitle: '.gg/D4c9VFYWyU',
+    description: 'Join the unblocked community discord or write game suggestions directly here.',
+    category: 'casual',
+    isNative: false,
+    isSpecial: true,
+    isSuggest: true,
+    playCount: 99420,
+    tags: ['HOT', 'NEW', 'COMMUNITY'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=400&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'comments_board',
+    title: '[!] COMMENTS',
+    subtitle: 'LOCAL CHATRACKET',
+    description: 'Express your scores, tips, or notes to fellow coordinates offline.',
+    category: 'casual',
+    isNative: false,
+    isSpecial: true,
+    isComment: true,
+    playCount: 88204,
+    tags: ['NEW', 'CHAT', 'FORUM'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'slope3d',
+    title: 'Slope 3D',
+    description: 'Roll down 3D neon courses natively. Keep balance and avoid falling into equations!',
+    category: 'native',
+    isNative: true,
+    nativeComponent: 'Slope3D',
+    playCount: 843912,
+    tags: ['3D', 'HOT', 'SPEED'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'retro_football',
+    title: 'Retro Football',
+    description: 'American classic side-scroll football tactics simulator running offline.',
+    category: 'sports',
+    isNative: true,
+    nativeComponent: 'RetroFootball',
+    playCount: 310492,
+    tags: ['SPORTS', 'HOT', 'RETRO'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'equation_clicker',
+    title: 'Equation Clicker',
+    description: 'Natively formulated algebra idle tycoon clicking calculator game.',
+    category: 'puzzle',
+    isNative: true,
+    nativeComponent: 'EquationClicker',
+    playCount: 204910,
+    tags: ['PUZZLE|IDLE', 'NEW'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'math_2048',
+    title: 'Math 2048',
+    description: 'Legendary arithmetic sliding grid tile game matching identical coordinate exponents.',
+    category: 'puzzle',
+    isNative: true,
+    nativeComponent: 'Math2048',
+    playCount: 412093,
+    tags: ['PUZZLE|IDLE', 'HOT'],
+    thumbnailUrl: 'https://images.unsplash.com/photo-1516116211223-5c359a36298a?w=400&auto=format&fit=crop&q=80'
+  }
+];
+
+const REPOSITORY_GAMES: GameItem[] = RAW_GAMES.map((raw, index) => {
+  const category = determineGameCategory(raw.title);
+  const description = determineGameDescription(raw.title, category);
+  const thumbnailUrl = getGameThumbnail(raw.id, category);
+  
+  const playCount = Math.floor(10000 + (Math.sin(index) + 1.2) * 54300);
+  
+  const tags: string[] = [];
+  if (category === '3d') tags.push('3D');
+  if (category === 'puzzle') tags.push('PUZZLE|IDLE');
+  if (category === 'sports') tags.push('SPORTS');
+  if (index % 7 === 0) tags.push('HOT');
+  if (index % 9 === 0) tags.push('NEW');
+  if (tags.length === 0) tags.push('ALL');
+
+  return {
+    id: raw.id,
+    title: raw.title,
+    description,
+    category,
+    isNative: false,
+    iframeUrl: raw.url,
+    thumbnailUrl,
+    playCount,
+    tags
+  };
+});
+
+const INITIAL_GAMES_LIST = [...NATIVE_GAMES, ...REPOSITORY_GAMES];
 
 // Disguise presets for the dynamic Tab Cloaker
 interface CloakPreset {
@@ -64,155 +232,7 @@ const CLOAK_PRESETS: CloakPreset[] = [
 
 export default function App() {
   // Game list data matching original request and earlier formats
-  const [games] = useState<GameItem[]>([
-    {
-      id: 'suggest_games',
-      title: '[!] SUGGEST GAMES',
-      subtitle: '.gg/D4c9VFYWyU',
-      description: 'Join the unblocked community discord or write game suggestions directly here.',
-      category: 'casual',
-      isNative: false,
-      isSpecial: true,
-      isSuggest: true,
-      playCount: 99420,
-      tags: ['HOT', 'NEW', 'COMMUNITY'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'comments_board',
-      title: '[!] COMMENTS',
-      subtitle: 'LOCAL CHATRACKET',
-      description: 'Express your scores, tips, or notes to fellow coordinates offline.',
-      category: 'casual',
-      isNative: false,
-      isSpecial: true,
-      isComment: true,
-      playCount: 88204,
-      tags: ['NEW', 'CHAT', 'FORUM'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'slope3d',
-      title: 'Slope 3D',
-      description: 'Roll down 3D neon courses natively. Keep balance and avoid falling into equations!',
-      category: 'native',
-      isNative: true,
-      nativeComponent: 'Slope3D',
-      playCount: 843912,
-      tags: ['3D', 'HOT', 'SPEED'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'retro_football',
-      title: 'Retro Football',
-      description: 'American classic side-scroll football tactics simulator running offline.',
-      category: 'sports',
-      isNative: true,
-      nativeComponent: 'RetroFootball',
-      playCount: 310492,
-      tags: ['SPORTS', 'HOT', 'RETRO'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'equation_clicker',
-      title: 'Equation Clicker',
-      description: 'Natively formulated algebra idle tycoon clicking calculator game.',
-      category: 'puzzle',
-      isNative: true,
-      nativeComponent: 'EquationClicker',
-      playCount: 204910,
-      tags: ['PUZZLE|IDLE', 'NEW'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'math_2048',
-      title: 'Math 2048',
-      description: 'Legendary arithmetic sliding grid tile game matching identical coordinate exponents.',
-      category: 'puzzle',
-      isNative: true,
-      nativeComponent: 'Math2048',
-      playCount: 412093,
-      tags: ['PUZZLE|IDLE', 'HOT'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1516116211223-5c359a36298a?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'antonblast',
-      title: 'Antonblast',
-      description: 'A fast-paced, destructive platform explosion game filled with speed drills.',
-      category: 'casual',
-      isNative: false,
-      iframeUrl: 'https://antonblast.unblocked.lol/',
-      playCount: 15403,
-      tags: ['HOT', 'NEW', 'MULT|BUILD'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'bad_parenting_1',
-      title: 'Bad Parenting 1',
-      description: 'The terrifying psychological horror coordinates about Mr. Red Face.',
-      category: 'horror',
-      isNative: false,
-      iframeUrl: 'https://badparenting.github.io/',
-      playCount: 22894,
-      tags: ['NEW', 'HOT'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'baldis_basics_plus',
-      title: "Baldi's Basics Plus",
-      description: 'Calculate algebra, grab notebook files, and slide away from Baldi.',
-      category: 'puzzle',
-      isNative: false,
-      iframeUrl: 'https://baldisbasics.github.io/',
-      playCount: 31055,
-      tags: ['PUZZLE|IDLE', 'NEW'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1596495578065-6e0763fa1141?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'bendy_ink_machine',
-      title: 'Bendy and the Ink Machine',
-      description: 'Escape ink demons inside an eerie vintage animation cartoon studio.',
-      category: 'horror',
-      isNative: false,
-      iframeUrl: 'https://bendy.unblocked.io/',
-      playCount: 19803,
-      tags: ['NEW', 'HOT'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'buckshot_roulette',
-      title: 'Buckshot Roulette',
-      description: 'Double or nothing details. Outplay the Dealer under heavy steel coordinates.',
-      category: 'casual',
-      isNative: false,
-      iframeUrl: 'https://buckshot-roulette.github.io/',
-      playCount: 54901,
-      tags: ['HOT', 'NEW', 'MULT|BUILD'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'celeste',
-      title: 'Celeste',
-      description: 'Precision climbing platformer of peak mathematical coordinates.',
-      category: '3d',
-      isNative: false,
-      iframeUrl: 'https://celeste.unblocked.co/',
-      playCount: 18451,
-      tags: ['3D', 'HOT'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1502481851512-e9e2529beff9?w=400&auto=format&fit=crop&q=80'
-    },
-    {
-      id: 'clover_pit',
-      title: 'Clover Pit',
-      description: 'A pixel arcade slot coordinates with eerie dark red backgrounds.',
-      category: 'casual',
-      isNative: false,
-      iframeUrl: 'https://clover-pit.github.io/',
-      playCount: 12051,
-      tags: ['NEW'],
-      thumbnailUrl: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&auto=format&fit=crop&q=80'
-    }
-  ]);
+  const [games] = useState<GameItem[]>(INITIAL_GAMES_LIST);
 
   // Active state management
   const [searchQuery, setSearchQuery] = useState('');
